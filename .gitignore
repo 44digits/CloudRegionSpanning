@@ -31,3 +31,5 @@ override.tf.json
 
 # remove key directories
 key/*
+*secret*
+
