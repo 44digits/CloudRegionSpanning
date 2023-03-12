@@ -13,7 +13,7 @@
 data "template_file" "client_tpl" {
   template = file("${path.module}/templates/client.tpl")
   vars = {
-    server_privateip = "${azurerm_linux_virtual_machine.server.private_ip_address}"
+    server_privateip = "${azurerm_linux_virtual_machine.server.public_ip_address}"
   }
 }
 
