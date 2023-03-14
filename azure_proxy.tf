@@ -124,7 +124,7 @@ resource "azurerm_linux_virtual_machine" "proxy" {
   tags                  = local.common_tags
 
   os_disk {
-    name                 = "osDisk_server"
+    name                 = "osDisk_proxy"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
