@@ -10,7 +10,7 @@
 ##########################################################
 
 
-data "template_file" "client_tpl" {
+data "template_file" "proxy_tpl" {
   template = file("${path.module}/templates/proxy.tpl")
   vars = {
     server_privateip = "${azurerm_linux_virtual_machine.server.private_ip_address}"
@@ -24,7 +24,7 @@ data "template_cloudinit_config" "config_proxy" {
 
   part {
     content_type = "text/cloud-config"
-    content      = data.template_file.client_tpl.rendered
+    content      = data.template_file.proxy_tpl.rendered
   }
 }
 
