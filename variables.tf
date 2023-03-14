@@ -3,6 +3,16 @@ variable "project" {
   description = "Naming prefix for all resources"
 }
 
+variable "aws_client_region" {
+  type        = string
+  description = "AWS Region to use for client"
+}
+
+variable "aws_instance_type" {
+  type        = string
+  description = "Type for EC2 Instnace"
+}
+
 variable "azure_instance_type" {
   type        = string
   description = "Type of Azure instance, server & proxy"
