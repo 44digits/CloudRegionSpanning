@@ -33,7 +33,7 @@ data "template_cloudinit_config" "config_proxy" {
 resource "azurerm_virtual_network" "proxy_network" {
   name                = "${local.name_prefix}_proxy_network"
   address_space       = ["10.1.0.0/16"]
-  location            = azurerm_resource_group.azure_rg.location
+  location            = var.azure_proxy_location
   resource_group_name = azurerm_resource_group.azure_rg.name
   tags                = local.common_tags
 }
@@ -49,7 +49,7 @@ resource "azurerm_subnet" "proxy_subnet" {
 # Create public IPs
 resource "azurerm_public_ip" "proxy_publicip" {
   name                = "${local.name_prefix}_proxy_publicip"
-  location            = azurerm_resource_group.azure_rg.location
+  location            = var.azure_proxy_location
   resource_group_name = azurerm_resource_group.azure_rg.name
   allocation_method   = "Dynamic"
   tags                = local.common_tags
@@ -58,7 +58,7 @@ resource "azurerm_public_ip" "proxy_publicip" {
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "proxy_nsg" {
   name                = "${local.name_prefix}_proxy_nsg"
-  location            = azurerm_resource_group.azure_rg.location
+  location            = var.azure_proxy_location
   resource_group_name = azurerm_resource_group.azure_rg.name
   tags                = local.common_tags
 
@@ -89,7 +89,7 @@ resource "azurerm_network_security_group" "proxy_nsg" {
 # Create network interface
 resource "azurerm_network_interface" "proxy_nic" {
   name                = "${local.name_prefix}_proxy_nic"
-  location            = azurerm_resource_group.azure_rg.location
+  location            = var.azure_proxy_location
   resource_group_name = azurerm_resource_group.azure_rg.name
   tags                = local.common_tags
 
@@ -116,7 +116,7 @@ resource "tls_private_key" "proxy_ssh" {
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "proxy" {
   name                  = "${local.name_prefix}-proxy"
-  location              = azurerm_resource_group.azure_rg.location
+  location              = var.azure_proxy_location
   resource_group_name   = azurerm_resource_group.azure_rg.name
   network_interface_ids = [azurerm_network_interface.proxy_nic.id]
   size                  = var.azure_instance_type
