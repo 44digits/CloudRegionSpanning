@@ -13,7 +13,7 @@
 data "template_file" "client_tpl" {
   template = file("${path.module}/templates/client.tpl")
   vars = {
-    server_privateip = "${azurerm_linux_virtual_machine.server.public_ip_address}"
+    server_privateip = "${azurerm_linux_virtual_machine.server.private_ip_address}"
   }
 }
 
@@ -143,4 +143,12 @@ resource "azurerm_linux_virtual_machine" "proxy" {
     username   = "azureuser"
     public_key = tls_private_key.proxy_ssh.public_key_openssh
   }
+}
+
+
+resource "azurerm_virtual_network_peering" "proxy_server" {
+  name                      = "proxy-server"
+  resource_group_name   = azurerm_resource_group.azure_rg.name
+  virtual_network_name      = azurerm_virtual_network.proxy_network.name
+  remote_virtual_network_id = azurerm_virtual_network.server_network.id
 }
