@@ -1,0 +1,88 @@
+#!/bin/bash
+
+# repeatedly pull url from server 
+#   and print total time & avg time per request
+# date: 25 February 2023
+
+showhelp () {
+    echo
+    echo "usage: networktest <# OF REQUESTS> <URL1> <URL2> ..."
+    echo
+    exit 1
+}
+
+nowseconds () {
+    date +%s.%N
+}
+
+
+get_externalip () {
+    dig @resolver4.opendns.com myip.opendns.com +short
+}
+
+
+get_urlhostip () {
+    declare _url=$1
+    echo $_url \
+        | sed 's|http://||' \
+        | sed 's|/.*||' \
+        | xargs dig +short \
+        | head -n 1
+}
+
+
+get_location () {
+    declare _ip=$1
+    declare _pycmd="\
+import sys,json; \
+js=json.load(sys.stdin); \
+print(' / '.join([js['country'],js['region'],js['city']]))"
+
+    wget -q -O - "ipinfo.io/$_ip" \
+        | python3 -c "$_pycmd"
+}
+
+
+if (( $# < 2 )); then
+    showhelp
+fi
+
+
+
+declare _repetitions=$1
+declare _sourceip=$(get_externalip)
+declare _destip
+declare _starttime=$(nowseconds)
+declare _runtime
+declare _tasktime
+declare _url
+
+echo
+echo "Networktest:"
+echo
+echo "Client IP: $_sourceip"
+echo "Client Location: $(get_location $_sourceip)"
+echo
+
+for _url in "${@:2}"; do
+    _starttime=$(nowseconds)
+    _destip=$(get_urlhostip $_url)
+    echo "Destination IP: $_destip"
+    echo "Destination Location: $(get_location $_destip)"
+    
+    for ((i=1; i<=$_repetitions; i++)); do
+        wget -q -c -O /dev/null $_url
+        echo -n "."
+    done
+    echo
+
+    _endtime=$(nowseconds)
+    _runtime=$(echo "scale=9; $_endtime-$_starttime" | bc)
+    _tasktime=$(echo "scale=9; $_runtime / $_repetitions" | bc)
+
+    printf "Runtime: %.3f seconds\n" $_runtime
+    printf "Avg task time: %.3f seconds\n" $_tasktime
+    echo
+done
+
+echo "Done."
