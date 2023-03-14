@@ -25,9 +25,7 @@ get_urlhostip () {
     declare _url=$1
     echo $_url \
         | sed 's|http://||' \
-        | sed 's|/.*||' \
-        | xargs dig +short \
-        | head -n 1
+        | sed 's|/.*||' 
 }
 
 
