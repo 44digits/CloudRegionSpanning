@@ -10,7 +10,7 @@ write_files:
         <H1>Testing Server</H1>
         </BODY>
         </HTML>
-    path: /var/html/index.html
+    path: /var/www/html/index.html
     permissions: '0644'
 
 runcmd:
