@@ -148,7 +148,7 @@ resource "azurerm_linux_virtual_machine" "proxy" {
 
 resource "azurerm_virtual_network_peering" "proxy_server" {
   name                      = "proxy-server"
-  resource_group_name   = azurerm_resource_group.azure_rg.name
+  resource_group_name       = azurerm_resource_group.azure_rg.name
   virtual_network_name      = azurerm_virtual_network.proxy_network.name
   remote_virtual_network_id = azurerm_virtual_network.server_network.id
 }
