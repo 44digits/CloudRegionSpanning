@@ -16,6 +16,25 @@ data "aws_ssm_parameter" "ami" {
 
 data "aws_availability_zones" "available" {}
 
+data "template_file" "client_tpl" {
+  template = file("${path.module}/templates/client.tpl")
+  vars = {
+    server_publicip  = "${azurerm_linux_virtual_machine.server.public_ip_address}"
+    proxy_publicip   = "${azurerm_linux_virtual_machine.proxy.public_ip_address}"
+    networktest_file = filebase64("${path.module}/utilities/networktest")
+  }
+}
+
+data "template_cloudinit_config" "config_client" {
+  gzip          = true
+  base64_encode = true
+
+  part {
+    content_type = "text/cloud-config"
+    content      = data.template_file.client_tpl.rendered
+  }
+}
+
 
 ##########################################################
 # Resources
@@ -99,27 +118,17 @@ resource "aws_security_group" "sg" {
 
 resource "aws_instance" "aws-instance" {
   ami                    = nonsensitive(data.aws_ssm_parameter.ami.value)
-  instance_type          = var.instance_type
+  instance_type          = var.aws_instance_type
   key_name               = "k3"
   subnet_id              = aws_subnet.subnet.id
   vpc_security_group_ids = [aws_security_group.sg.id]
-  user_data = <<EOF
-    #cloud-config
-    ${jsonencode({
-  write_files = [{
-    path        = "/usr/local/bin/networktest"
-    permissions = "0755"
-    owner       = "root:root"
-    encoding    = "b64"
-    content     = filebase64("${path.module}/networktest")
-}, ] })}
-EOF
+  user_data_base64       = data.template_cloudinit_config.config_client.rendered
 
-tags = merge(
-  {
-    Name = "${local.name_prefix}_client",
-  },
-  local.common_tags
-)
+  tags = merge(
+    {
+      Name = "${local.name_prefix}_client",
+    },
+    local.common_tags
+  )
 }
 
