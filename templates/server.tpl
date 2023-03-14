@@ -14,4 +14,4 @@ write_files:
     permissions: '0644'
 
 runcmd:
--   dd if=/dev/urandom of=/var/www/html/sample.file bs=100M count=1
+-   dd if=/dev/urandom of=/var/www/html/sample.file bs=10M count=1
