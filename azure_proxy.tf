@@ -32,7 +32,7 @@ data "template_cloudinit_config" "config_proxy" {
 # Create virtual network
 resource "azurerm_virtual_network" "proxy_network" {
   name                = "${local.name_prefix}_proxy_network"
-  address_space       = ["10.0.1.0/16"]
+  address_space       = ["10.1.0.0/16"]
   location            = azurerm_resource_group.azure_rg.location
   resource_group_name = azurerm_resource_group.azure_rg.name
   tags                = local.common_tags
@@ -43,7 +43,7 @@ resource "azurerm_subnet" "proxy_subnet" {
   name                 = "${local.name_prefix}_proxy_subnet"
   resource_group_name  = azurerm_resource_group.azure_rg.name
   virtual_network_name = azurerm_virtual_network.proxy_network.name
-  address_prefixes     = ["10.0.2.0/24"]
+  address_prefixes     = ["10.1.1.0/24"]
 }
 
 # Create public IPs
