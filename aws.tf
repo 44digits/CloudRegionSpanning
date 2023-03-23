@@ -116,10 +116,25 @@ resource "aws_security_group" "sg" {
   )
 }
 
+resource "aws_key_pair" "awsclient_key_pair" {
+  key_name   = "client-key-pair"
+  public_key = tls_private_key.awskey_rsa.public_key_openssh
+}
+
+resource "tls_private_key" "awskey_rsa" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "local_file" "awsclient_key" {
+  content  = tls_private_key.awskey_rsa.private_key_pem
+  filename = "${path.module}/key/aws_key.key"
+}
+
 resource "aws_instance" "aws-instance" {
   ami                    = nonsensitive(data.aws_ssm_parameter.ami.value)
   instance_type          = var.aws_instance_type
-  key_name               = "k3"
+  key_name               = "client-key-pair"
   subnet_id              = aws_subnet.subnet.id
   vpc_security_group_ids = [aws_security_group.sg.id]
   user_data_base64       = data.template_cloudinit_config.config_client.rendered
