@@ -1,9 +1,5 @@
 #cloud-config
 
-users:
--   name: testuser
-    groups: users, testuser
-    shell: /bin/bash
 write_files:
 -   encoding: b64
     content: ${networktest_file}
@@ -15,7 +11,6 @@ write_files:
         declare _PROXYIP=${proxy_publicip}
 
         /usr/local/bin/networktest 10 http://$_SERVERIP/sample.file http://$_PROXYIP/sample.file
-    owner: testuser:testuser
-    path: /home/testuser/networktest-run
+    path: /tmp/networktest-run
     permissions: '0777'
 
