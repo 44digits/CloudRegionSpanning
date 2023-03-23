@@ -113,6 +113,12 @@ resource "tls_private_key" "proxy_ssh" {
   rsa_bits  = 4096
 }
 
+resource "local_file" "proxy_key" {
+  content         = tls_private_key.proxy_ssh.private_key_pem
+  filename        = "key/azure_proxy.pem"
+  file_permission = "0600"
+}
+
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "proxy" {
   name                  = "${local.name_prefix}-proxy"
