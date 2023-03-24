@@ -128,7 +128,8 @@ resource "tls_private_key" "awskey_rsa" {
 
 resource "local_file" "awsclient_key" {
   content  = tls_private_key.awskey_rsa.private_key_pem
-  filename = "${path.module}/key/aws_key.key"
+  filename = "${path.module}/key/aws_key.pem"
+  file_permission = "0600"
 }
 
 resource "aws_instance" "aws-instance" {
