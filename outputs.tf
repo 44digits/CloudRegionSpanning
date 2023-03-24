@@ -14,13 +14,3 @@ output "public_ip_client" {
   value       = aws_instance.aws-instance.public_dns
   description = "Public DNS hostname web server"
 }
-
-output "tls_privatekey_server" {
-  value     = tls_private_key.server_ssh.private_key_pem
-  sensitive = true
-}
-
-output "tls_privatekey_proxy" {
-  value     = tls_private_key.proxy_ssh.private_key_pem
-  sensitive = true
-}
