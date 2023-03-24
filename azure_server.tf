@@ -12,6 +12,9 @@
 
 data "template_file" "server_tpl" {
   template = file("${path.module}/templates/server.tpl")
+  vars = {
+    project_name = "${local.name_prefix}"
+  }
 }
 
 

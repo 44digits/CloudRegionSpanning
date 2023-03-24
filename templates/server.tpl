@@ -7,7 +7,7 @@ write_files:
 -   content: |
         <HTML>
         <BODY>
-        <H1>Testing Server</H1>
+        <H1>${project_name} - Testing Server</H1>
         </BODY>
         </HTML>
     path: /var/www/html/index.html
