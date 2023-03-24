@@ -4,4 +4,4 @@ aws_client_region = "ap-south-1"
 
 azure_instance_type   = "Standard_B1s"
 azure_server_location = "westus3"
-azure_proxy_location = "centralindia"
+azure_proxy_location  = "centralindia"
