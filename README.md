@@ -11,4 +11,6 @@ This repository contains Terraform files to build a test architecture on Azure a
 
 A large random file is created on the server vm.  This file is downloaded repeatedly by the client in order to calculate average network speeds.  The client repeats this test twice, downloading from the sever directly, then again through the proxy.
 
-### Results
+### Documentation
+
+See the following link for usage and further instructions: http://www.44digits.com/posts/how-fast-is-azures-network-peering/
