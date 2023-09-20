@@ -69,6 +69,17 @@ resource "azurerm_network_security_group" "server_nsg" {
   tags                = local.common_tags
 
   security_rule {
+    name                       = "icmp"
+    priority                   = 300
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Icmp"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+  security_rule {
     name                       = "http"
     priority                   = 100
     direction                  = "Inbound"
