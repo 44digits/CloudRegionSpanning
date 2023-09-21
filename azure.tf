@@ -67,7 +67,7 @@ module "azure-server" {
   vm_resource_group_name = azurerm_resource_group.azure_rg.name
   vm_config              = data.template_cloudinit_config.config_server.rendered
   vm_instance_type       = var.azure_instance_type
-  vm_address_range =  "10.0"
+  vm_address_range       = "10.0"
   tag_list               = local.common_tags
 }
 
@@ -85,7 +85,7 @@ module "azure-proxy" {
   vm_resource_group_name = azurerm_resource_group.azure_rg.name
   vm_config              = data.template_cloudinit_config.config_proxy.rendered
   vm_instance_type       = var.azure_instance_type
-  vm_address_range =  "10.1"
+  vm_address_range       = "10.1"
   tag_list               = local.common_tags
 }
 
