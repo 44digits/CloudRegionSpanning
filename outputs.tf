@@ -3,11 +3,11 @@ output "resource_group_name" {
 }
 
 output "public_ip_address_server" {
-  value = azurerm_linux_virtual_machine.server.public_ip_address
+  value = module.azure-server.public_ip
 }
 
 output "public_ip_address_proxy" {
-  value = azurerm_linux_virtual_machine.proxy.public_ip_address
+  value = module.azure-proxy.public_ip
 }
 
 output "public_ip_client" {

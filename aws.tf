@@ -19,8 +19,8 @@ data "aws_availability_zones" "available" {}
 data "template_file" "client_tpl" {
   template = file("${path.module}/templates/client.tpl")
   vars = {
-    server_publicip  = "${azurerm_linux_virtual_machine.server.public_ip_address}"
-    proxy_publicip   = "${azurerm_linux_virtual_machine.proxy.public_ip_address}"
+    server_publicip  = "${module.azure-server.public_ip}"
+    proxy_publicip   = "${module.azure-proxy.public_ip}"
     networktest_file = filebase64("${path.module}/utilities/networktest")
   }
 }
